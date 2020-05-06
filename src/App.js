@@ -45,15 +45,15 @@ class App extends Component {
   smoothScroll = (to) => {
     let root = document.getElementById('root');
     let interval = setInterval(() => {
-      if(root.scrollTop !== to) {
+      if(Math.ceil(root.scrollTop) !== Math.ceil(to)) {
         let destination;
         if(this._direction==='down') {
-          destination = root.scrollTop+root.scrollTop/this._step;
-          if(destination > to) destination = to;
+          destination = Math.ceil(root.scrollTop+root.scrollTop/this._step);
+          if(destination >= to) destination = Math.ceil(to);
         }
         else {
           destination = root.scrollTop-root.scrollTop/this._step;
-          if(destination < to) destination = to;
+          if(destination <= to) destination = Math.ceil(to);
         }
         root.scrollTo(0, destination);
       } else {
