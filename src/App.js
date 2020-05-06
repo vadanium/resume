@@ -54,7 +54,6 @@ class App extends Component {
         else {
           destination = root.scrollTop-root.scrollTop/this._step;
           if(destination <= to) destination = Math.ceil(to);
-          console.log([this._direction, destination, Math.ceil(to)])
         }
         root.scrollTo(0, destination);
       } else {
