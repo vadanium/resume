@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './scss/style.scss';
 
 class Header extends Component {
     constructor(props) {
@@ -54,7 +53,7 @@ class Header extends Component {
         let depthX = (x-w)*0.09;
         let depthY = (y-h)*0.09;
         let depthZ = Math.abs(depthX) + Math.abs(depthY);
-        let deg = depthZ * 0.35;
+        let deg = depthZ * 0.35 * -1;
     
         elm.style.transform = `translate3d(${depthX}px, ${depthY}px, 0) rotate3d(${depthX}, ${depthY}, 0, ${deg}deg)`;    
       }
@@ -71,7 +70,7 @@ class Header extends Component {
 
             <div className="header-title">
                 <div id="header-parallax" className="box">
-                    <div class="face front">
+                    <div className="face front">
                         <div className="name">
                             <h1>WISNU NUGROHO</h1>
                         </div>
@@ -80,11 +79,11 @@ class Header extends Component {
                         </div>
                         <span>SIMPLE BUT PERFECT</span> 
                     </div>
-                    <div class="face back"></div>
-                    <div class="face right"></div>
-                    <div class="face left"></div>
-                    <div class="face top"></div>
-                    <div class="face bottom"></div>
+                    <div className="face back"></div>
+                    <div className="face right"></div>
+                    <div className="face left"></div>
+                    <div className="face top"></div>
+                    <div className="face bottom"></div>
                 </div>
             </div>  
 
