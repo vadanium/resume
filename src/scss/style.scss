@@ -32,7 +32,7 @@ body {
         align-items: center;
         flex-wrap: wrap;
         text-align: center;
-        font-size: 20px;
+        font-size: 14px;
 
         .header-top {
             display: block;
@@ -42,17 +42,61 @@ body {
         .header-title {
             width: 100%;
 
+            .box {
+                width: 260px;
+                height: 260px;
+                perspective: 900px;
+                transform-style: preserve-3d;
+                margin: 0 auto;
+
+                .face {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    backface-visibility: inherit;
+                    flex-direction: column;
+                    border: 1px solid #ebebeb;
+
+                    &.front {
+                        transform: translateZ(130px);
+                    }
+
+                    &.back {
+                        transform: rotateY(180deg) translateZ(130px);
+                    }
+
+                    &.right {
+                        transform: rotateY(90deg) translateZ(130px);
+                    }
+
+                    &.left {
+                        transform: rotateY(-90deg) translateZ(130px);
+                    }
+
+                    &.top {
+                        transform: rotateX(90deg) translateZ(130px);
+                    }
+
+                    &.bottom {
+                        transform: rotateX(-90deg) translateZ(130px);
+                    }
+                }
+            }
+
             .name {
                 h1 {
                     margin: 0px;
                     padding: 0px;
-                    font-size: 20px;
+                    font-size: 14px;
                     font-weight: 300;
                     padding-bottom: 15px;
                 }
             }
             .name-changed {
-                font-size: 32px;
+                font-size: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;

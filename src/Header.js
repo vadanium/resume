@@ -40,8 +40,28 @@ class Header extends Component {
         setTimeout(this.changeText, headerText===fullText && !headerTextDel?3000:180);
     }
 
+    mouseMove = () => {
+        let header = document.getElementById('header')
+        header.addEventListener('mousemove', this.parallax);
+      }
+    
+      parallax = (e) => {
+        let elm = document.getElementById('header-parallax');
+        let w = window.innerWidth/2;
+        let h = window.innerHeight/2;
+        let x = e.clientX;
+        let y = e.clientY;
+        let depthX = (x-w)*0.09;
+        let depthY = (y-h)*0.09;
+        let depthZ = Math.abs(depthX) + Math.abs(depthY);
+        let deg = depthZ * 0.35;
+    
+        elm.style.transform = `translate3d(${depthX}px, ${depthY}px, 0) rotate3d(${depthX}, ${depthY}, 0, ${deg}deg)`;    
+      }
+
     componentDidMount() {
         this.changeText();
+        this.mouseMove();
     }
 
   render() {
@@ -50,13 +70,22 @@ class Header extends Component {
             <div className="header-top"></div>
 
             <div className="header-title">
-                <div className="name">
-                    <h1>WISNU NUGROHO</h1>
+                <div id="header-parallax" className="box">
+                    <div class="face front">
+                        <div className="name">
+                            <h1>WISNU NUGROHO</h1>
+                        </div>
+                        <div className="name-changed">
+                            <span>I AM</span><span className="changed-text">{this.state.headerText}</span><div className="blink"></div>
+                        </div>
+                        <span>SIMPLE BUT PERFECT</span> 
+                    </div>
+                    <div class="face back"></div>
+                    <div class="face right"></div>
+                    <div class="face left"></div>
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
                 </div>
-                <div className="name-changed">
-                    <span>I AM</span><span className="changed-text">{this.state.headerText}</span><div className="blink"></div>
-                </div>
-                <span>SIMPLE BUT PERFECT</span> 
             </div>  
 
             <div className="scroll-icon-wrapper">

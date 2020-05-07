@@ -11,7 +11,7 @@ class App extends Component {
     this._scrollMax = 0;
     this._scrollingPage = false;
     this._step = 10;
-    this._time = 15;
+    this._time = 20;
   }
 
   scroll = () => {
