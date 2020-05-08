@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Content extends Component {
     constructor(props) {
@@ -75,11 +74,6 @@ class Content extends Component {
   render() {
     return (
         <>
-        <div className="under-construction">
-            <div className="marquee">
-                <span><FontAwesomeIcon icon="hammer" /> I'm still working on it</span>
-            </div>
-        </div>
         <section id="menu" className="menu scroll scroll-2">
             <div className="title">SPACE TO EXPLORE</div>
                 <ul>
