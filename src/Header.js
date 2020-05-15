@@ -15,6 +15,14 @@ class Header extends Component {
             headerTextDel: false,
         };
         this._boxOpen = false;
+
+        this._mouseX = 0;
+        this._rotateX = 0;
+        this._rotateY = 0;
+        this._rotateZ = 0;
+        this._direction = '';
+
+        this._inDrag = false;
     }
 
     changeText = () => {
@@ -47,43 +55,42 @@ class Header extends Component {
     }
 
     parallax = (e) => {
+        // if(this._inDrag) return;
         let elm = document.getElementById('header-parallax');
-        let frontElm = document.getElementById('front');
         let topElm = document.getElementById('top');
-        let leftElm = document.getElementById('left');
-        let rightElm = document.getElementById('right');
-        let shadow = document.getElementById('shadow');
+        // let frontElm = document.getElementById('front');
+        // let leftElm = document.getElementById('left');
+        // let rightElm = document.getElementById('right');
+        // let shadow = document.getElementById('shadow');
         let w = window.innerWidth/2;
         let h = window.innerHeight/2;
         let x = e.clientX;
         let y = e.clientY;
 
         // translate box
-        let depthX = (x-w)*0.15;
+        // let depthX = (x-w)*0.15;
         let depthY = (y-h)*0.25;
 
         // rotate box
-        let rotateX = depthY*0.2*-1;
-        let rotateY = depthX*0.2;
-        let rotateZ = rotateX*rotateY*0.1;
+        this._rotateX = depthY*-0.2;
+        this._rotateZ = 0;
 
         // cardboard gradient
-        let gradientX = depthX*0.2;
+        // let gradient = rotateZ;
 
         // shadow
-        let shadowX = 20+(depthX*0.1);
+        // let shadowX = 20+(depthX*0.1);
         
         // scale shadow
-        let scale = Math.abs(y*100/h*0.01);
-        if(scale > 2) scale = 2;
-        if(scale < 1.3) scale = 1.3;
-
-        elm.style.transform = `translate(${depthX}px, ${depthY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;    
-        frontElm.style.backgroundImage = `linear-gradient(${-gradientX}deg, #ae8d5a, #f8cc89)`;
-        topElm.style.backgroundImage = `linear-gradient(${gradientX}deg, #f8cc89, #ae8d5a)`;
-        leftElm.style.backgroundImage = `linear-gradient(${gradientX}deg, #ae8d5a, #f8cc89)`;
-        rightElm.style.backgroundImage = `linear-gradient(${gradientX}deg, #ae8d5a, #f8cc89)`;
-        shadow.style.transform = `translate3d(${shadowX}px, ${280+(-depthY)}px, 50px) rotateX(80deg) rotateY(${-rotateZ}deg) scale(${scale})`;    
+        // let scale = Math.abs(y*100/h*0.01);
+        // if(scale > 2) scale = 2;
+        // if(scale < 1.3) scale = 1.3;
+        elm.style.transform = `rotateX(${this._rotateX}deg) rotateY(${this._rotateY}deg)`;
+        // frontElm.style.backgroundImage = `linear-gradient(${-gradient}deg, #ae8d5a, #f8cc89)`;
+        topElm.style.backgroundImage = `linear-gradient(${this._rotateY}deg, #f8cc89, #ae8d5a)`;
+        // leftElm.style.backgroundImage = `linear-gradient(${gradient}deg, #ae8d5a, #f8cc89)`;
+        // rightElm.style.backgroundImage = `linear-gradient(${gradient}deg, #ae8d5a, #f8cc89)`;
+        // shadow.style.transform = `translate3d(${shadowX}px, ${280+(-depthY)}px, 50px) rotateX(80deg) rotateY(${-rotateZ}deg) scale(${scale})`;    
 
     }
 
@@ -121,9 +128,55 @@ class Header extends Component {
         this._boxOpen = !this._boxOpen;
     }
 
+    dragScreen = () => {
+        let box = document.getElementById('header');
+        box.addEventListener('mousedown', this.mouseDown)
+        box.addEventListener('mouseup', this.mouseUp)
+    }
+
+    mouseDown = (e) => {
+        this._mouseX = e.clientX;
+    }
+
+    mouseUp = (e) => {
+        let direction = e.clientX > this._mouseX ? 'right' : 'left';
+        let distance = Math.abs(e.clientX-this._mouseX);
+        if(distance > 200) distance = 200;
+        
+        if(this._mouseX === 0 || distance < 10 || this._inDrag) return;
+        
+        this._inDrag = true;
+        this._mouseX = 0;
+        this.rotate(direction, distance, this._rotateY);
+    }
+
+    rotate = (direction, distance, start) => {
+        let elm = document.getElementById('header-parallax');
+        let rotateY = this._rotateY;
+        elm.style.transform = `rotateX(${this._rotateX}deg) rotateY(${rotateY}deg)`;
+        setTimeout(() => {
+            let end;
+            if(direction === 'left') {
+                rotateY -= 1
+                if(rotateY <= -361) rotateY = 0;
+                end = (start-distance) <= -360 ? -360 : start-distance;
+            } else {
+                rotateY += 1
+                if(rotateY >= 361) rotateY = 0;
+                end = (start+distance) >= 360 ? 360 : start+distance;
+            }
+            console.log([this._rotateY, end])
+            this._rotateY = rotateY;
+            if(this._rotateY !== end) this.rotate(direction, distance, start);
+            else this._inDrag = false; 
+        }, 5)
+    }
+
     componentDidMount() {
         this.changeText();
         this.mouseMove();
+        this.dragScreen();
+        
         document.getElementById('front').addEventListener('click', this.openBox);
     }
 
@@ -140,7 +193,7 @@ class Header extends Component {
                 <span>SIMPLE BUT PERFECT</span> 
             </div>
 
-            <div className="header-box">
+            <div id="header-box" className="header-box">
                 <div id="header-parallax" className="box">
                 <div id="shadow" className="shadow"></div>
                     <div id="front" className="face front">
